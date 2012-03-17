@@ -11,8 +11,6 @@ Gem::Specification.new do |s|
   s.summary     = %q{simple-navigation-bootstrap is a simple-navigation renderer for twitter-bootstrap navigation and dropdowns.}
   s.description = %q{simple-navigation-bootstrap is a simple-navigation renderer for twitter-bootstrap navigation and dropdowns.}
 
-  s.rubyforge_project = "simple-navigation-bootstrap"
-
   s.files         = `git ls-files`.split("\n")
   s.test_files    = `git ls-files -- {test,spec,features}/*`.split("\n")
   s.executables   = `git ls-files -- bin/*`.split("\n").map{ |f| File.basename(f) }

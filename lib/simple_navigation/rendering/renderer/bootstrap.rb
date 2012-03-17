@@ -2,6 +2,8 @@ module SimpleNavigation
   module Renderer
     class Bootstrap < SimpleNavigation::Renderer::Base
       def render(item_container)
+        config_selected_class = SimpleNavigation.config.selected_class
+        SimpleNavigation.config.selected_class = 'active'
         list_content = item_container.items.inject([]) do |list, item|
           li_options = item.html_options.reject {|k, v| k == :link}
           li_content = tag_for(item, li_options.delete(:icon))
@@ -12,6 +14,7 @@ module SimpleNavigation
           end
           list << content_tag(:li, li_content, li_options)
         end.join
+        SimpleNavigation.config.selected_class = config_selected_class
         if skip_if_empty? && item_container.empty?
           ''
         else  

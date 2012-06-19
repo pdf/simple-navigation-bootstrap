@@ -33,7 +33,6 @@ module SimpleNavigation
           url = '#'
           item_options = item.html_options
           item_options[:link] = Hash.new if item_options[:link].nil?
-          item_options[:link][:data] = Hash.new if item_options[:link][:data].nil?
           item_options[:link][:class] = Array.new if item_options[:link][:class].nil?
           item_options[:link][:class] << 'dropdown-toggle'
           item_options[:link][:'data-toggle'] = 'dropdown'

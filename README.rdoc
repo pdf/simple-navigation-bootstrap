@@ -23,7 +23,7 @@ To create a navigation menu, you might do something like this:
    navigation.items do |primary|
      primary.item :music, 'Music', musics_path
      primary.item :dvds, 'Dvds', dvds_path
-     primary.item :books, 'Books', :icon => [:icon-book, :icon-white] do |books|
+     primary.item :books, 'Books', :icon => ['icon-book', 'icon-white'] do |books|
        books.item :fiction, 'Fiction', books_fiction_path
        books.item :history, 'History', books_history_path
      end

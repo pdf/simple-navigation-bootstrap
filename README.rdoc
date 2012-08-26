@@ -41,4 +41,5 @@ may not contain links - any links will be overwritten with a <tt>#</tt> anchor.
 
 == TODO
 So far, only nav markup and dropdowns are supported, may also implement 
-buttons and nav lists in the future.
+buttons and nav lists in the future. And tests, there are currently no
+tests.

@@ -25,6 +25,9 @@ module SimpleNavigation
       protected
 
       def tag_for(item, icon = nil)
+        unless item.url or include_sub_navigation?(item)
+          return item.name
+        end
         url = item.url
         link = Array.new
         link << content_tag(:i, '', :class => [icon].flatten.compact.join(' ')) unless icon.nil?

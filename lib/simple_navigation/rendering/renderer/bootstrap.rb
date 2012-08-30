@@ -33,12 +33,12 @@ module SimpleNavigation
         link << content_tag(:i, '', :class => [icon].flatten.compact.join(' ')) unless icon.nil?
         link << item.name
         if include_sub_navigation?(item)
-          url = '#'
           item_options = item.html_options
           item_options[:link] = Hash.new if item_options[:link].nil?
           item_options[:link][:class] = Array.new if item_options[:link][:class].nil?
           item_options[:link][:class] << 'dropdown-toggle'
           item_options[:link][:'data-toggle'] = 'dropdown'
+          item_options[:link][:'data-target'] = '#'
           item.html_options = item_options
           link << content_tag(:b, '', :class => 'caret')
         end

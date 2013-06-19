@@ -1,21 +1,27 @@
-== Simple Navigation for Bootstrap
-This gem adds a renderer for {Simple Navigation}[http://github.com/andi/simple-navigation] to output markup compatible 
-with {Twitter Bootstrap}[http://twitter.github.com/bootstrap/].
+# Simple Navigation for Bootstrap
+This gem adds a renderer for [Simple Navigation](http://github.com/andi/simple-navigation) to output markup compatible 
+with [Twitter Bootstrap](http://twitter.github.com/bootstrap/).
 
-== Getting Started
+## Getting Started
 For Rails >= 3, simply add this gem to your `Gemfile`:
- gem 'simple-navigation-bootstrap'
+```ruby
+gem 'simple-navigation-bootstrap'
+```
 and run
- bundle install
-Follow the {configuration instructions}[https://github.com/andi/simple-navigation/wiki/Configuration] on the Simple Navigation wiki for initial configuration.
+```
+bundle install
+```
+Follow the [configuration instructions](https://github.com/andi/simple-navigation/wiki/Configuration) on the Simple Navigation wiki for initial configuration.
 
 To use the Bootstrap renderer, specify it in your view:
- render_navigation :expand_all => true, :renderer => :bootstrap
+```ruby
+render_navigation :expand_all => true, :renderer => :bootstrap
+```
 
-== Additional Functionality
+## Additional Functionality
 In addition to generating Bootstrap-comptible list markup, you may specify 
 an `:icon` attribute on your navigation items, either as an array 
-or string, containing Bootstrap {icon classes}[http://twitter.github.com/bootstrap/base-css.html#icons], to add an icon to the item.
+or string, containing Bootstrap [icon classes](http://twitter.github.com/bootstrap/base-css.html#icons), to add an icon to the item.
 
 For items with sub-navigation, you may specify `:split => true` to enable a
 split dropdown.  Split dropdowns allow using an url on the primary navigation
@@ -31,7 +37,7 @@ For example:
 */
 ```
 
-== Examples
+## Examples
 To create a navigation menu, you might do something like this:
 ```ruby
 SimpleNavigation::Configuration.run do |navigation|  
@@ -50,14 +56,14 @@ SimpleNavigation::Configuration.run do |navigation|
 end
 ```
 
-== Caveats
+## Caveats
 Requires Bootstrap version >= 2.1.0
 
-== Further Reading
-* {Twitter Bootstrap Documentation}[http://twitter.github.com/bootstrap/]
-* {Simple Navigation Wiki}[https://github.com/andi/simple-navigation/wiki/]
+## Further Reading
+* [Twitter Bootstrap Documentation](http://twitter.github.com/bootstrap/)
+* [Simple Navigation Wiki](https://github.com/andi/simple-navigation/wiki/)
 
-== TODO
+## TODO
 So far, only nav markup and dropdowns are supported, may also implement 
 buttons and nav lists in the future. And tests, there are currently no
 tests.

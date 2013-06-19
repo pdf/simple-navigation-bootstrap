@@ -42,7 +42,7 @@ module SimpleNavigation
           item.html_options = item_options
           link << content_tag(:b, '', :class => 'caret')
         end
-        link_to(link.join(" "), url, options_for(item))
+        link_to(link.join(" ").html_safe, url, options_for(item))
       end
     end
   end

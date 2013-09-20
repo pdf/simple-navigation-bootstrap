@@ -1,0 +1,6 @@
+.navbar .nav > li.dropdown-split-right > a {
+  padding-left: 7px;
+}
+.navbar .nav > li.dropdown-split-left > a {
+  padding-right: 0;
+}

@@ -7,10 +7,22 @@ module SimpleNavigation
         list_content = item_container.items.inject([]) do |list, item|
           li_options = item.html_options.reject {|k, v| k == :link}
           li_content = tag_for(item, li_options.delete(:icon), li_options.delete(:badge))
+          icon = li_options.delete(:icon)
+		  badge = li_options.delete(:badge)
+          split = (include_sub_navigation?(item) and li_options.delete(:split))
+          li_content = tag_for(item, item.name, icon, split, badge)
           if include_sub_navigation?(item)
-            item.sub_navigation.dom_class = [item.sub_navigation.dom_class, 'dropdown-menu'].flatten.compact.join(' ')
+            if split
+              lio = li_options.dup
+              lio[:class] = [li_options[:class], 'dropdown-split-left'].flatten.compact.join(' ')
+              list << content_tag(:li, li_content, lio)
+              item.html_options[:link] = nil
+              li_options[:id] = nil
+              li_content = tag_for(item)
+            end
+            item.sub_navigation.dom_class = [item.sub_navigation.dom_class, 'dropdown-menu', split ? 'pull-right' : nil].flatten.compact.join(' ')
             li_content << render_sub_navigation_for(item)
-            li_options[:class] = [li_options[:class], 'dropdown'].flatten.compact.join(' ')
+            li_options[:class] = [li_options[:class], 'dropdown', split ? 'dropdown-split-right' : nil].flatten.compact.join(' ')
           end
           list << content_tag(:li, li_content, li_options)
         end.join
@@ -24,7 +36,7 @@ module SimpleNavigation
 
       protected
 
-      def tag_for(item, icon = nil, badge = {})
+      def tag_for(item, name = '', icon = nil, split = false, badge = {})
         unless item.url or include_sub_navigation?(item)
           return item.name
         end
@@ -32,19 +44,22 @@ module SimpleNavigation
         link = Array.new
         link << content_tag(:span, badge[:value].call, :class => ["badge", badge[:class]].flatten.compact.join(' ')) if badge.present? and badge[:value]
         link << content_tag(:i, '', :class => [icon].flatten.compact.join(' ')) unless icon.nil?
-        link << item.name
+        link << name
         if include_sub_navigation?(item)
-          url = '#'
           item_options = item.html_options
           item_options[:link] = Hash.new if item_options[:link].nil?
           item_options[:link][:class] = Array.new if item_options[:link][:class].nil?
-          item_options[:link][:class] << 'dropdown-toggle'
-          item_options[:link][:'data-toggle'] = 'dropdown'
+          unless split
+            item_options[:link][:class] << 'dropdown-toggle'
+            item_options[:link][:'data-toggle'] = 'dropdown'
+            item_options[:link][:'data-target'] = '#'
+            link << content_tag(:b, '', :class => 'caret')
+          end
           item.html_options = item_options
-          link << content_tag(:b, '', :class => 'caret')
         end
-        link_to(link.join(" "), url, options_for(item))
+        link_to(link.join(" ").html_safe, url, options_for(item))
       end
+
     end
   end
 end

@@ -28,7 +28,13 @@ module SimpleNavigation
         if skip_if_empty? && item_container.empty?
           ''
         else  
-          content_tag(:ul, list_content, {:id => item_container.dom_id, :class => item_container.dom_class}) 
+          if item_container.respond_to?(:dom_attributes)
+            dom_attributes = item_container.dom_attributes
+          else
+            # supports simple-navigation before the ItemContainer#dom_attributes
+            dom_attributes = {:id => item_container.dom_id, :class => item_container.dom_class}
+          end
+          content_tag(:ul, list_content, dom_attributes) 
         end
       end
 

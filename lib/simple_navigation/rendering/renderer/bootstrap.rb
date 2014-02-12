@@ -7,8 +7,11 @@ module SimpleNavigation
         list_content = item_container.items.inject([]) do |list, item|
           li_options = item.html_options.reject {|k, v| k == :link}
           icon = li_options.delete(:icon)
-          split = (include_sub_navigation?(item) and li_options.delete(:split))
-          li_content = tag_for(item, item.name, icon, split)
+          dropdown = item_container.dropdown.nil? ? true : item_container.dropdown
+          split = item_container.split
+          split = (include_sub_navigation?(item) and li_options.delete(:split)) if li_options.include?(:split)
+          dropdown = (include_sub_navigation?(item) and li_options.delete(:dropdown)) if li_options.include?(:dropdown)
+          li_content = tag_for(item, item.name, icon, split, dropdown)
           if include_sub_navigation?(item)
             if split
               lio = li_options.dup
@@ -18,9 +21,9 @@ module SimpleNavigation
               li_options[:id] = nil
               li_content = tag_for(item)
             end
-            item.sub_navigation.dom_class = [item.sub_navigation.dom_class, 'dropdown-menu', split ? 'pull-right' : nil].flatten.compact.join(' ')
+            item.sub_navigation.dom_class = [item.sub_navigation.dom_class, dropdown ? 'dropdown-menu' : nil, split ? 'pull-right' : nil].flatten.compact.join(' ')
             li_content << render_sub_navigation_for(item)
-            li_options[:class] = [li_options[:class], 'dropdown', split ? 'dropdown-split-right' : nil].flatten.compact.join(' ')
+            li_options[:class] = [li_options[:class], dropdown ? 'dropdown' : nil, split ? 'dropdown-split-right' : nil].flatten.compact.join(' ')
           end
           list << content_tag(:li, li_content, li_options)
         end.join
@@ -40,7 +43,7 @@ module SimpleNavigation
 
       protected
 
-      def tag_for(item, name = '', icon = nil, split = false)
+      def tag_for(item, name = '', icon = nil, split = false, dropdown = false)
         unless item.url or include_sub_navigation?(item)
           return item.name
         end
@@ -53,9 +56,11 @@ module SimpleNavigation
           item_options[:link] = Hash.new if item_options[:link].nil?
           item_options[:link][:class] = Array.new if item_options[:link][:class].nil?
           unless split
-            item_options[:link][:class] << 'dropdown-toggle'
-            item_options[:link][:'data-toggle'] = 'dropdown'
-            item_options[:link][:'data-target'] = '#'
+            if dropdown
+              item_options[:link][:class] << 'dropdown-toggle'
+              item_options[:link][:'data-toggle'] = 'dropdown'
+              item_options[:link][:'data-target'] = '#'
+            end
             link << content_tag(:b, '', :class => 'caret')
           end
           item.html_options = item_options

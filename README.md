@@ -19,15 +19,18 @@ render_navigation :expand_all => true, :renderer => :bootstrap
 ```
 
 ## Additional Functionality
+### Icons
 In addition to generating Bootstrap-comptible list markup, you may specify 
 an `:icon` attribute on your navigation items, either as an array 
 or string, containing Bootstrap [icon classes](http://twitter.github.com/bootstrap/base-css.html#icons), to add an icon to the item.
 
-For items with sub-navigation, you may specify `:split => true` to enable a
-split dropdown.  Split dropdowns allow using an url on the primary navigation
-item, as well as having a dropdown containing sub-navigation.  If you plan on
-using this feature, in your `application.css` or equivalent you must require
-the `bootstrap_navbar_split_dropdowns` stylesheet after requiring Bootstrap.
+### Split navigation
+For items with sub-navigation, you may specify `:split => true` on an item to
+enable a split dropdown.  Split dropdowns allow using an url on the primary
+navigation item, as well as having a dropdown containing sub-navigation.  If
+you plan on using this feature, in your `application.css` or equivalent you
+must require the `bootstrap_navbar_split_dropdowns` stylesheet after
+requiring Bootstrap.
 
 For example:
 ```css
@@ -36,6 +39,15 @@ For example:
 *= require bootstrap_navbar_split_dropdowns
 */
 ```
+
+You may also enable split navigation for all children by setting the `split`
+attribute of the container to `true` (defaults to `false`).
+
+### Dropdowns
+If you wish to disable dropdown attributes for some reason (eg -you don't use the
+JavaScript, or have custom handling), you may specify `:dropdown => false` on an
+item, or set the `dropdown` attribute on the container to `false` (defaults to
+`true`).
 
 ## Examples
 To create a navigation menu, you might do something like this:
@@ -52,6 +64,8 @@ SimpleNavigation::Configuration.run do |navigation|
       books.item :history, 'History', books_history_path
     end
     primary.dom_class = 'nav'
+    primary.dropdown = true
+    primary.split = false
   end
 end
 ```

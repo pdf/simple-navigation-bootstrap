@@ -6,9 +6,11 @@ module SimpleNavigation
         SimpleNavigation.config.selected_class = 'active'
         list_content = item_container.items.inject([]) do |list, item|
           li_options = item.html_options.reject {|k, v| k == :link}
+          li_content = tag_for(item, li_options.delete(:icon), li_options.delete(:badge))
           icon = li_options.delete(:icon)
+		  badge = li_options.delete(:badge)
           split = (include_sub_navigation?(item) and li_options.delete(:split))
-          li_content = tag_for(item, item.name, icon, split)
+          li_content = tag_for(item, item.name, icon, split, badge)
           if include_sub_navigation?(item)
             if split
               lio = li_options.dup
@@ -40,12 +42,13 @@ module SimpleNavigation
 
       protected
 
-      def tag_for(item, name = '', icon = nil, split = false)
+      def tag_for(item, name = '', icon = nil, split = false, badge = {})
         unless item.url or include_sub_navigation?(item)
           return item.name
         end
         url = item.url
         link = Array.new
+        link << content_tag(:span, badge[:value].call, :class => ["badge", badge[:class]].flatten.compact.join(' ')) if badge.present? and badge[:value]
         link << content_tag(:i, '', :class => [icon].flatten.compact.join(' ')) unless icon.nil?
         link << name
         if include_sub_navigation?(item)

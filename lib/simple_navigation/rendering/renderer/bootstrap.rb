@@ -2,6 +2,7 @@ module SimpleNavigation
   module Renderer
     class Bootstrap < SimpleNavigation::Renderer::Base
       def render(item_container)
+        return '' if respond_to?(:skip_if_empty?) && skip_if_empty? && item_container.empty?
         config_selected_class = SimpleNavigation.config.selected_class
         SimpleNavigation.config.selected_class = 'active'
         list_content = item_container.items.inject([]) do |list, item|
@@ -28,16 +29,13 @@ module SimpleNavigation
           list << content_tag(:li, li_content, li_options)
         end.join
         SimpleNavigation.config.selected_class = config_selected_class
-        if skip_if_empty? && item_container.empty?
-          ''
-        else  
-          if item_container.respond_to?(:dom_attributes)
-            dom_attributes = item_container.dom_attributes
-          else
-            # supports simple-navigation before the ItemContainer#dom_attributes
-            dom_attributes = {:id => item_container.dom_id, :class => item_container.dom_class}
-          end
-          content_tag(:ul, list_content, dom_attributes) 
+        if item_container.respond_to?(:dom_attributes)
+          dom_attributes = item_container.dom_attributes
+        else
+          # supports simple-navigation before the ItemContainer#dom_attributes
+          dom_attributes = {:id => item_container.dom_id, :class => item_container.dom_class}
+        end
+        content_tag(:ul, list_content, dom_attributes)
         end
       end
 

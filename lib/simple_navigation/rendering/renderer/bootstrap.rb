@@ -36,7 +36,6 @@ module SimpleNavigation
           dom_attributes = {:id => item_container.dom_id, :class => item_container.dom_class}
         end
         content_tag(:ul, list_content, dom_attributes)
-        end
       end
 
       protected

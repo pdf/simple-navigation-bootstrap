@@ -18,6 +18,17 @@ To use the Bootstrap renderer, specify it in your view:
 render_navigation :expand_all => true, :renderer => :bootstrap
 ```
 
+And the minimal navigation config you need is:
+```ruby
+SimpleNavigation::Configuration.run do |navigation|  
+  navigation.items do |primary|
+    primary.dom_class = 'nav'
+  end
+end
+```
+
+See below for a more complete example.
+
 ## Additional Functionality
 ### Icons
 In addition to generating Bootstrap-comptible list markup, you may specify 

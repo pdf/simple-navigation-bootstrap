@@ -7,12 +7,11 @@ module SimpleNavigation
         SimpleNavigation.config.selected_class = 'active'
         list_content = item_container.items.inject([]) do |list, item|
           li_options = item.html_options.reject {|k, v| k == :link}
-          icon = li_options.delete(:icon)
           dropdown = item_container.dropdown.nil? ? true : item_container.dropdown
           split = item_container.split
           split = (include_sub_navigation?(item) and li_options.delete(:split)) if li_options.include?(:split)
           dropdown = (include_sub_navigation?(item) and li_options.delete(:dropdown)) if li_options.include?(:dropdown)
-          li_content = tag_for(item, item.name, icon, split, dropdown)
+          li_content = tag_for(item, item.name, item.send("options")[:icon], split, dropdown)
           if include_sub_navigation?(item)
             if split
               lio = li_options.dup
@@ -49,17 +48,19 @@ module SimpleNavigation
         link << content_tag(:i, '', :class => [icon].flatten.compact.join(' ')) unless icon.nil?
         link << name
         if include_sub_navigation?(item)
-          item_link_html_opts = item.link_html_options || Hash.new
-          item_link_html_opts[:class] = Array.new if item_link_html_opts[:class].nil?
+          item_options = item.html_options
+          item_options[:link] = Hash.new if item_options[:link].nil?
+          item_options[:link][:class] = Array.new if item_options[:link][:class].nil?
           unless split
             if dropdown
-              item_link_html_opts[:class] << 'dropdown-toggle'
-              item_link_html_opts[:'data-toggle'] = 'dropdown'
-              item_link_html_opts[:'data-target'] = '#'
+              item_options[:link][:class] << 'dropdown-toggle'
+              item_options[:link][:'data-toggle'] = 'dropdown'
+              item_options[:link][:'data-target'] = '#'
             end
             link << content_tag(:b, '', :class => 'caret')
           end
-          item.instance_variable_set(:'@link_html_options', item_link_html_opts)
+          # if html_options was exposed then item.html_options = item_options[:link] would work
+          item.instance_variable_set(:'@link_html_options', item_options[:link])
         end
         link_to(link.join(" ").html_safe, url, options_for(item))
       end

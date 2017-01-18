@@ -20,4 +20,6 @@ Gem::Specification.new do |s|
   s.add_development_dependency "rake"
   s.add_runtime_dependency "simple-navigation", ">= 4.0.0"
   s.add_runtime_dependency "railties", ">= 3.1"
+  # thor dependencies assume the spurious warning messages bug will be fixed 19.5
+  s.add_runtime_dependency "thor", "0.19.1", "!=0.19.2", "!=0.19.3", "!=0.19.4"
 end

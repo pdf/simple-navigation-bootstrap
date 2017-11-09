@@ -2,6 +2,8 @@
 This gem adds a renderer for [Simple Navigation](http://github.com/andi/simple-navigation) to output markup compatible 
 with [Twitter Bootstrap](http://twitter.github.com/bootstrap/).
 
+_MAINTAINER WANTED_: Whilst this likely works as is, I don't do much Rails work these days, so I'd be happy to hand this over to someone if they'd like to take over maintenance
+
 ## Getting Started
 For Rails >= 3, simply add this gem to your `Gemfile`:
 ```ruby

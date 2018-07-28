@@ -13,6 +13,7 @@ module SimpleNavigation
           split = (include_sub_navigation?(item) and li_options.delete(:split)) if li_options.include?(:split)
           dropdown = (include_sub_navigation?(item) and li_options.delete(:dropdown)) if li_options.include?(:dropdown)
           li_content = tag_for(item, item.name, icon, split, dropdown)
+          to_skip = false
           if include_sub_navigation?(item)
             if split
               lio = li_options.dup
@@ -23,10 +24,16 @@ module SimpleNavigation
               li_content = tag_for(item)
             end
             item.sub_navigation.dom_class = [item.sub_navigation.dom_class, dropdown ? 'dropdown-menu' : nil, split ? 'pull-right' : nil].flatten.compact.join(' ')
-            li_content << render_sub_navigation_for(item)
+            sub_content = render_sub_navigation_for(item)
+            to_skip = true if respond_to?(:skip_if_empty?) && skip_if_empty? && sub_content.blank?
+            li_content << sub_content
             li_options[:class] = [li_options[:class], dropdown ? 'dropdown' : nil, split ? 'dropdown-split-right' : nil].flatten.compact.join(' ')
           end
-          list << content_tag(:li, li_content, li_options)
+          if to_skip
+            list << ''
+          else
+            list << content_tag(:li, li_content, li_options)
+          end
         end.join
         SimpleNavigation.config.selected_class = config_selected_class
         if item_container.respond_to?(:dom_attributes)

@@ -6,7 +6,8 @@ module SimpleNavigation
         config_selected_class = SimpleNavigation.config.selected_class
         SimpleNavigation.config.selected_class = 'active'
         list_content = item_container.items.inject([]) do |list, item|
-          li_options = item.html_options.reject {|k, v| k == :link}
+          # li_options = item.html_options.reject {|k, v| k == :link}
+          li_options = item.html_options
           icon = li_options.delete(:icon)
           dropdown = item_container.dropdown.nil? ? true : item_container.dropdown
           split = item_container.split
